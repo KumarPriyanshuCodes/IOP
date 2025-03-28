@@ -1,17 +1,25 @@
 pipeline {
     agent any
-    tools {
-        maven 'maven'  // Use the exact name you set in Global Tool Configuration
-    }
+    
     stages {
-        stage('Build') {
+        stage('Checkout SCM') {
             steps {
-                bat 'mvn clean package'
+                checkout scm  // Clones your repository
             }
         }
+        
+        stage('Build') {
+            steps {
+                // Change directory to where your pom.xml is located
+                dir('my-project') {  // Adjust 'my-project' to your subdirectory name
+                    bat 'mvn clean package'  // Run Maven command
+                }
+            }
+        }
+        
         stage('Test') {
             steps {
-                bat 'mvn test'
+                // Add testing steps if needed
             }
         }
     }
